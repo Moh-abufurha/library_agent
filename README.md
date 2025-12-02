@@ -166,17 +166,7 @@ log_message(...)
 
 The agent will **think → choose tool → request → receive → answer**.
 
----
 
-## 🔐 **Configuration (.env)**
-
-Create a `.env` file if you want (optional):
-
-```
-OLLAMA_URL=http://localhost:11434/api/chat
-MODEL=llama3.1
-DB_NAME=library.db
-```
 
 ---
 
@@ -209,18 +199,6 @@ What is the status of order 3?
 
 ---
 
-## 🖼️ **Screenshots**
-
-> *(Replace with real images later)*
-
-```
-![Chat UI](assets/chat-ui.png)
-![Database](assets/db.png)
-![Agent Tools](assets/tools.png)
-```
-
----
-
 ## 🔮 **Future Improvements**
 
 * Add authentication system
@@ -229,12 +207,5 @@ What is the status of order 3?
 * Improve UI with React or Vue
 * Add voice assistant mode
 * Add more complex multi-step agent planning
-
----
-
-## 🤝 **Contributing**
-
-Pull requests are welcome!
-Please follow clean code practices, commit messages, and linting conventions.
 
 
