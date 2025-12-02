@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Library Desk Agent 📚 | Virtual Assistant</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #2B6800;
+      --primary-dark: #E0F4F1;
+      --secondary: #3f37c9;
+      --light: #f8f9fa;
+      --dark: #212529;
+      --gray: #6c757d;
+      --success: #4cc9f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      color: var(--dark);
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-size: 2rem;
+      margin-right: 15px;
+      color: var(--primary);
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 5px;
+    }
+
+    .chat-container {
+      width: 100%;
+      max-width: 500px;
+      height: 70vh;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .chat-header {
+      background: var(--primary);
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .chat-header-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .chat-header-icon {
+      font-size: 1.2rem;
+      margin-right: 10px;
+    }
+
+    .chat-header-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .chat-header-status {
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .message {
+      margin: 8px 0;
+      padding: 12px 16px;
+      border-radius: 18px;
+      max-width: 80%;
+      line-height: 1.4;
+      position: relative;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeIn 0.3s ease-out forwards;
+      font-size: 0.95rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .user {
+      background: var(--primary);
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+    }
+
+    .bot {
+      background: white;
+      color: var(--dark);
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+      border: 1px solid #e9ecef;
+    }
+
+    .message-time {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      margin-top: 5px;
+      text-align: right;
+    }
+
+    .input-area {
+      display: flex;
+      padding: 15px;
+      background: white;
+      border-top: 1px solid #e9ecef;
+    }
+
+    input {
+      flex: 1;
+      padding: 12px 15px;
+      border: 1px solid #e9ecef;
+      border-radius: 25px;
+      outline: none;
+      font-size: 0.95rem;
+      transition: border 0.2s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+    }
+
+    button {
+      margin-left: 10px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: var(--primary-dark);
+    }
+
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .quick-reply {
+      background: white;
+      border: 1px solid #e9ecef;
+      border-radius: 20px;
+      padding: 8px 15px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .quick-reply:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border-radius: 18px;
+      align-self: flex-start;
+      margin: 8px 0;
+      border: 1px solid #e9ecef;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--gray);
+      border-radius: 50%;
+      margin: 0 2px;
+      animation: typingAnimation 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typingAnimation {
+      0%, 60%, 100% {
+        transform: translateY(0);
+      }
+      30% {
+        transform: translateY(-5px);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .chat-container {
+        height: 80vh;
+      }
+
+      .message {
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-book-open"></i>
+    </div>
+    <div>
+      <h1>Library Desk Agent</h1>
+      <div class="subtitle">Your virtual library assistant</div>
+    </div>
+  </div>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-header-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="chat-header-title">Library Assistant</div>
+      </div>
+      <div class="chat-header-status">
+        <div class="status-dot"></div>
+        <span>Online</span>
+      </div>
+    </div>
+
+    <div class="chat-box" id="chat-box">
+      <div class="message bot">
+        Hello! I'm your virtual library assistant. How can I help you today?
+        <div class="message-time">Just now</div>
+      </div>
+
+
+    </div>
+
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Type your question..." />
+      <button onclick="sendMessage()">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+
+  <script>
+    let sessionID = null;
+    const chatBox = document.getElementById("chat-box");
+    const userInput = document.getElementById("user-input");
+    const quickReplies = document.getElementById("quick-replies");
+
+    function getCurrentTime() {
+      const now = new Date();
+      return now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function appendMessage(text, sender) {
+      const msg = document.createElement("div");
+      msg.classList.add("message", sender);
+
+      const time = document.createElement("div");
+      time.classList.add("message-time");
+      time.textContent = getCurrentTime();
+
+      msg.textContent = text;
+      msg.appendChild(time);
+      chatBox.insertBefore(msg, quickReplies);
+
+      // Scroll to bottom
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+      const typing = document.createElement("div");
+      typing.classList.add("typing-indicator");
+
+      for (let i = 0; i < 3; i++) {
+        const dot = document.createElement("div");
+        dot.classList.add("typing-dot");
+        typing.appendChild(dot);
+      }
+
+      chatBox.insertBefore(typing, quickReplies);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      return typing;
+    }
+
+    function hideTypingIndicator(typingElement) {
+      if (typingElement && typingElement.parentNode) {
+        typingElement.parentNode.removeChild(typingElement);
+      }
+    }
+
+function sendMessage() {
+  const text = userInput.value.trim();
+  if (!text) return;
+
+  appendMessage(text, "user");
+  userInput.value = "";
+
+  const typing = showTypingIndicator();
+fetch("http://127.0.0.1:5000/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    message: text,
+    session_id: sessionID
+  }),
+})
+  .then((res) => res.json())
+  .then((data) => {
+    hideTypingIndicator(typing);
+    appendMessage(data.reply, "bot");
+
+    // 👈 تخزين session_id في المكان الصحيح
+    if (data.session_id) {
+      sessionID = data.session_id;
+    }
+  })
+  .catch(() => {
+    hideTypingIndicator(typing);
+    appendMessage("⚠️ Connection error. Make sure the backend is running.", "bot");
+  });
+
+}
+
+    function sendQuickReply(text) {
+      appendMessage(text, "user");
+
+      // Show typing indicator
+      const typing = showTypingIndicator();
+
+      // Simulate bot response after delay
+      setTimeout(() => {
+        hideTypingIndicator(typing);
+        const botResponse = generateBotResponse(text);
+        appendMessage(botResponse, "bot");
+      }, 1000 + Math.random() * 1000);
+    }
+
+    function generateBotResponse(userMessage) {
+      const lowerMsg = userMessage.toLowerCase();
+
+      if (lowerMsg.includes('history') || lowerMsg.includes('history book')) {
+        return "History books are located in the 900-999 section on the second floor. We have a special collection of local history books near the reading area.";
+      } else if (lowerMsg.includes('opening') || lowerMsg.includes('hour') || lowerMsg.includes('time')) {
+        return "Our opening hours are:\n\nMonday-Friday: 9am - 8pm\nSaturday: 10am - 6pm\nSunday: 12pm - 5pm\n\nWe're closed on public holidays.";
+      } else if (lowerMsg.includes('renew') || lowerMsg.includes('extend')) {
+        return "You can renew books:\n1. Online through our website\n2. By calling the library\n3. In person at the front desk\n\nMost books can be renewed up to 3 times unless they're on hold for another patron.";
+      } else if (lowerMsg.includes('hello') || lowerMsg.includes('hi')) {
+        return "Hello there! How can I assist you with your library needs today?";
+      } else if (lowerMsg.includes('thank')) {
+        return "You're welcome! Is there anything else I can help you with?";
+      } else {
+        const responses = [
+          "I can help you find books, explain library services, or answer questions about your account.",
+          "That's an interesting question. Let me connect you with more detailed information about that.",
+          "I'm still learning about all library services. Could you rephrase your question?",
+          "For that specific question, you might want to visit our help desk for more detailed assistance."
+        ];
+        return responses[Math.floor(Math.random() * responses.length)];
+      }
+    }
+
+    // Allow pressing Enter to send message
+    userInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
+</html>
