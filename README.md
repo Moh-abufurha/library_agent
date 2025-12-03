@@ -1,34 +1,28 @@
-Here is your **full, professional, ready-to-publish README.md** — clean, modern, beautifully formatted, and fully aligned with your actual codebase.
-
----
-
 # 📚 **Library Desk Agent**
 
-### *An Intelligent Autonomous AI Agent for Library Management*
+### **An Intelligent Autonomous AI Agent for Library Management**
 
-The **Library Desk Agent** is a fully autonomous, reasoning-driven library assistant built with **Python, Flask, SQLite, and Ollama (LLaMA 3.1)**.
-It combines natural language understanding, planning, tool execution, and a modern chat UI to deliver a real, functional, end-to-end AI Agent.
-
-The system intelligently handles book search, ordering, restocking, pricing, and inventory analysis — all via natural conversation.
+The **Library Desk Agent** is a fully autonomous, reasoning-driven library assistant built using **Python, Flask, SQLite, and Ollama (LLaMA 3.1)**.
+It performs real-world operations such as book search, ordering, stock updates, and inventory analysis using **natural conversation, multi-step reasoning, and structured tool calling**.
 
 ---
 
-## 🚀 **Features**
+# 🚀 **Features**
 
-* 🔍 **Natural-language book search** (title + author)
-* 🧾 **Create customer orders** with automatic stock updates
-* 📦 **Restock books** intelligently by title
-* 💲 **Edit book prices** directly
-* 🛠️ **Full tool-calling system** using structured JSON for agent actions
-* 🧠 **Short-term memory** stored in SQLite (last 3 messages)
-* 🔄 **Multi-step reasoning agent loop** (up to 2 steps)
-* 📊 **Inventory summary** with low-stock detection
-* 💬 **Modern interactive chat UI** (typing indicator, animations, real-time messaging)
-* 🗄️ **Database inspector** for debugging (books, orders, messages, tools)
+* 🔍 **Natural-language book search** (by title or author)
+* 🧾 **Create customer orders** with automatic stock reduction
+* 📦 **Restock books** by title with real DB updates
+* 💲 **Update book prices** instantly
+* 🛠️ **Structured JSON Tool Calling System**
+* 🧠 **Short-term memory** (last 3 messages stored in SQLite)
+* 🔄 **Multi-step reasoning loop** (up to 2 steps for performance)
+* 📊 **Inventory summary** detecting low-stock books
+* 💬 **Modern chat UI** with typing animation + real-time messages
+* 🗄️ **Built-in DB Inspector** (books, orders, messages, tools)
 
 ---
 
-## 🧰 **Tech Stack**
+# 🧰 **Tech Stack**
 
 ### **Backend**
 
@@ -41,13 +35,13 @@ The system intelligently handles book search, ordering, restocking, pricing, and
 
 ### **Frontend**
 
-* HTML5, CSS3, JavaScript
+* HTML5 + CSS3 + JavaScript
 * FontAwesome Icons
-* Responsive modern UI
+* Responsive UI with animations
 
 ---
 
-## 📁 **Folder Structure**
+# 📁 **Folder Structure**
 
 ```
 library_agent/
@@ -58,13 +52,13 @@ library_agent/
 │── user_interface.py
 │── app/
 │    └── index.html
-│── library.db   (auto-created)
+│── library.db          # auto-created
 │── README.md
 ```
 
 ---
 
-## ⚙️ **Installation Guide**
+# ⚙️ **Installation Guide**
 
 ### **1️⃣ Install Python dependencies**
 
@@ -74,7 +68,7 @@ pip install flask flask-cors openai requests
 
 ### **2️⃣ Install & run Ollama**
 
-Download: [https://ollama.com/download](https://ollama.com/download)
+Download from: [https://ollama.com/download](https://ollama.com/download)
 
 Then pull the model:
 
@@ -88,7 +82,7 @@ ollama pull llama3.1
 python libraryDB.py
 ```
 
-This will create tables + insert seed data ✔
+Creates all tables + seed data ✔
 
 ### **4️⃣ Run the backend**
 
@@ -98,7 +92,7 @@ python user_interface.py
 
 ### **5️⃣ Open the frontend**
 
-Open:
+Simply open:
 
 ```
 app/index.html
@@ -106,31 +100,37 @@ app/index.html
 
 ---
 
-## ▶️ **How to Run the Project**
+# ▶️ **How to Run the Project**
 
-### **Start the Flask server**
+### **Start backend**
 
 ```bash
 python user_interface.py
 ```
 
-Backend now listens on:
+Server runs at:
 
 ```
 http://127.0.0.1:5000/chat
 ```
 
-### **Open the chat UI**
+### **Open UI**
 
-Simply open `index.html` in your browser.
+Open the file:
+
+```
+app/index.html
+```
+
+The agent now responds in real time and calls tools automatically.
 
 ---
 
-## 🔌 **API / Agent Workflow**
+# 🔌 **API + Agent Workflow**
 
-### **POST /chat**
+### **📨 Frontend → Backend**
 
-The frontend sends:
+POST `/chat`
 
 ```json
 {
@@ -139,7 +139,7 @@ The frontend sends:
 }
 ```
 
-Backend returns:
+### **📤 Backend → Frontend**
 
 ```json
 {
@@ -148,64 +148,73 @@ Backend returns:
 }
 ```
 
-### **Agent → Tools (from agent.py)**
+---
 
-Tools include:
+# 🤖 **Agent → Tools System**
 
-```python
-find_books(q)
-create_order(customer_id, items)
-restock_book(title, qty)
-update_price(isbn, price)
-order_status(order_id)
-inventory_summary(threshold)
-log_message(...)
-```
+The agent can call any of the following tools:
 
+* `find_books(q)`
+* `create_order(customer_id, items)`
+* `restock_book(title, qty)`
+* `update_price(isbn, price)`
+* `order_status(order_id)`
+* `inventory_summary(threshold)`
+* `log_message(...)`
 
+Workflow:
 
-The agent will **think → choose tool → request → receive → answer**.
-
-
+1. Agent thinks internally
+2. Chooses best tool
+3. Executes it
+4. Reads the DB result
+5. Sends final natural-language reply
 
 ---
 
-## 📘 **Usage Examples**
+# 📘 **Usage Examples**
 
-### ➤ Search for books
+### 🔎 **Search for books**
 
-```
-Find books by Robert Martin
-```
+> Find books by Robert Martin
 
-### ➤ Create an order
+### 🧾 **Create an order**
 
-```
-Create an order for customer 2:  
-3 copies of Clean Code and 1 copy of The Pragmatic Programmer.
-```
+> Create an order for customer 2: 3 copies of Clean Code and 1 copy of The Pragmatic Programmer
 
-### ➤ Restock a book
+### 📦 **Restock**
 
-```
-Restock Clean Architecture by 5
-```
+> Restock Clean Architecture by 5
 
-### ➤ Check order status
+### 🧪 **Order status**
 
-```
-What is the status of order 3?
-```
+> What is the status of order 3?
 
 ---
 
-## 🔮 **Future Improvements**
+# 📉 **Database Inspector (Debug Tools)**
 
-* Add authentication system
-* Add long-term memory with vector DB
-* Add analytics dashboard
-* Improve UI with React or Vue
-* Add voice assistant mode
-* Add more complex multi-step agent planning
+Run:
 
+```bash
+python TestDB.py
+```
 
+See:
+
+* books
+* customers
+* orders
+* messages
+* tool_calls
+
+---
+
+# 🔮 **Future Improvements**
+
+* 🔐 Add authentication
+* 🧠 Add long-term memory using vector DB
+* 📊 Analytics dashboard
+* 🎨 Rebuild UI using React or Vue
+* 🎙️ Add voice-assistant mode
+* 🧩 Enhance multi-step planning & chain-of-thought
