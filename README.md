@@ -26,7 +26,7 @@ It performs real-world operations such as book search, ordering, stock updates, 
 
 ### **Backend**
 
-* Python 3.x
+* Python 3.11
 * Flask + CORS
 * SQLite3
 * Ollama (LLaMA 3.1)
@@ -60,94 +60,56 @@ library_agent/
 
 # ⚙️ **Installation Guide**
 
-### **1️⃣ Install Python dependencies**
+### ** Install Python dependencies**
 
 ```bash
-pip install flask flask-cors openai requests
+pip install -r requirements.txt
 ```
 
-### **2️⃣ Install & run Ollama**
+## 🚀 **How to Run the Project (Correct Startup Order)**
 
-Download from: [https://ollama.com/download](https://ollama.com/download)
+### **1️⃣ Install & start Ollama**
 
-Then pull the model:
+Download Ollama:
+[https://ollama.com/download](https://ollama.com/download)
+
+Pull the model:
 
 ```bash
 ollama pull llama3.1
 ```
 
-### **3️⃣ Initialize the database**
+Start the model:
+
+```bash
+ollama run llama3.1
+```
+
+---
+
+### **2️⃣ Initialize the database (one time only)**
 
 ```bash
 python libraryDB.py
 ```
 
-Creates all tables + seed data ✔
-
-### **4️⃣ Run the backend**
-
-```bash
-python user_interface.py
-```
-
-### **5️⃣ Open the frontend**
-
-Simply open:
-
-```
-app/index.html
-```
+This creates all required tables + seeds initial data.
 
 ---
 
-# ▶️ **How to Run the Project**
+### **3️⃣ Start the backend server (Flask)**
 
-### **Start backend**
+in new Terminal in vs or pycharm :
 
 ```bash
 python user_interface.py
 ```
 
-Server runs at:
+The backend runs at:
 
 ```
 http://127.0.0.1:5000/chat
 ```
-
-### **Open UI**
-
-Open the file:
-
-```
-app/index.html
-```
-
-The agent now responds in real time and calls tools automatically.
-
----
-
-# 🔌 **API + Agent Workflow**
-
-### **📨 Frontend → Backend**
-
-POST `/chat`
-
-```json
-{
-  "message": "Find clean code book",
-  "session_id": "optional"
-}
-```
-
-### **📤 Backend → Frontend**
-
-```json
-{
-  "reply": "Found 2 matching books...",
-  "session_id": "d2c1-9321-..."
-}
-```
-
 ---
 
 # 🤖 **Agent → Tools System**
